@@ -163,9 +163,9 @@ legend(
 )
 ```
 
-## Gráfico cantidad de homicidios por provincia y edad de l victima
+## Gráfico cantidad de delitos por provincia y edad de la victima
 ```{r}
-#| label: cantidad-homicidios-edad-provincia
+#| label: cantidad-delitos-edad-provincia
 #| code-fold: true
 
 # Crear tabla de frecuencias
@@ -192,6 +192,97 @@ legend(
 ```
 
 
+## Gráfico cantidad de homicidios por provincia y edad de la victima
+```{r}
+#| label: cantidad-homicidios-edad-provincia
+#| code-fold: true
+
+# Filtro de delitos por subdelito = homicidio
+
+homicidios_2022 <- delitos_2022[delitos_2022$SubDelito == "HOMICIDIO", ]
+
+# Crear tabla de frecuencias
+tabla_delitos <- table(homicidios_2022$Edad,
+                       homicidios_2022$Provincia)
+
+barplot(
+  height = table(homicidios_2022$Edad, homicidios_2022$Provincia),
+  main = "Cantidad de homicidios cometidos en 2022 por provincia y edad",
+  sub = "Fuente OIJ",
+  col = rainbow(4),
+	las = 2, # inclinación de las etiquetas (valor entre 0 y 3)
+	cex.names = 0.5,  # tamaño de las etiquetas
+	cex.axis = 0.5 # tamaño de los números en el eje 
+)
+
+# Leyenda
+legend(
+  "topleft",
+  legend = c("Adulto Mayor", "Desconocido", "Mayor de edad", "Menor de edad"),
+  fill = rainbow(4),
+  cex = 0.5
+)
+```
+
+# Gráfico cantidad de homicidios por canton
+```{r}
+#| label: cantidad-homicidios-cantones-barras
+#| code-fold: true
+
+# Filtro de delitos por subdelito = homicidio
+homicidios_2022 <- delitos_2022[delitos_2022$SubDelito == "HOMICIDIO", ]
+
+# Crear tabla de frecuencias
+tabla_homicidios <- table(homicidios_2022$Canton)
+
+# Ordenar descendentemente la tabla de frecuencia
+tabla_homicidios_ordenada <- sort(tabla_homicidios, decreasing = TRUE)
+
+# Obtener los cantones con más delitos
+tabla_homicidios_ordenada <- head(tabla_homicidios_ordenada, 20)
+
+# Gráfico de barras verticales
+barplot(
+	height = tabla_homicidios_ordenada,
+	main = "Cantidad de homicidios cometidos en 2022 por cantón", 
+	sub = "Fuente: OIJ",
+	col = "red",
+	las = 2, # inclinación de las etiquetas (valor entre 0 y 3)
+	cex.names = 0.5,  # tamaño de las etiquetas
+	cex.axis = 0.7 # tamaño de los números en el eje 
+)
+
+```
 
 
+## Gráfico cantidad de homicidios por canton y edad de la victima
+```{r}
+#| label: cantidad-homicidios-edad-canton
+#| code-fold: true
 
+# Filtro de delitos por subdelito = homicidio
+
+homicidios_2022 <- delitos_2022[delitos_2022$SubDelito == "HOMICIDIO", ]
+
+# Crear tabla de frecuencias
+tabla_delitos <- table(homicidios_2022$Edad,
+                       homicidios_2022$Canton)
+
+barplot(
+  height = table(homicidios_2022$Edad, homicidios_2022$Canton),
+  main = "Cantidad de homicidios cometidos en 2022 por canton y edad",
+  sub = "Fuente OIJ",
+  col = rainbow(4),
+	las = 2, # inclinación de las etiquetas (valor entre 0 y 3)
+	cex.names = 0.5,  # tamaño de las etiquetas
+	cex.axis = 0.5 # tamaño de los números en el eje 
+)
+
+# Leyenda
+legend(
+  "topleft",
+  legend = c("Adulto Mayor", "Desconocido", "Mayor de edad", "Menor de edad"),
+  fill = rainbow(4),
+  cex = 0.5
+)
+```
