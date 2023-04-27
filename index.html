@@ -121,6 +121,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#barras-verticales" id="toc-barras-verticales" class="nav-link" data-scroll-target="#barras-verticales">Barras verticales</a></li>
   </ul></li>
   <li><a href="#gráfico-cantidad-de-delitos-por-edad-de-la-vicitma" id="toc-gráfico-cantidad-de-delitos-por-edad-de-la-vicitma" class="nav-link" data-scroll-target="#gráfico-cantidad-de-delitos-por-edad-de-la-vicitma">Gráfico cantidad de delitos por edad de la vicitma</a></li>
+  <li><a href="#gráfico-cantidad-de-homicidios-por-provincia-y-edad-de-l-victima" id="toc-gráfico-cantidad-de-homicidios-por-provincia-y-edad-de-l-victima" class="nav-link" data-scroll-target="#gráfico-cantidad-de-homicidios-por-provincia-y-edad-de-l-victima">Gráfico cantidad de homicidios por provincia y edad de l victima</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -157,12 +158,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="carga-y-muestra-de-los-datos" class="level1">
 <h1>Carga y muestra de los datos</h1>
 <div class="cell">
+<details>
+<summary>Código</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>delitos_2022 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"estadisticaspoliciales2022.csv"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(delitos_2022[, <span class="fu">c</span>(<span class="st">"Delito"</span>, <span class="st">"Victima"</span>, <span class="st">"Fecha"</span>,<span class="st">"Edad"</span>, <span class="st">"Provincia"</span>)]), </span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"Muetra de datos de delitos"</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>Muetra de datos de delitos</caption>
@@ -323,27 +327,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="barras-verticales" class="level3">
 <h3 class="anchored" data-anchor-id="barras-verticales">Barras verticales</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear tabla de frecuencias</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>tabla_delitos <span class="ot">&lt;-</span> <span class="fu">table</span>(delitos_2022<span class="sc">$</span>Canton)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Ordenar descendentemente la tabla de frecuencia</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>tabla_delitos_ordenada <span class="ot">&lt;-</span> <span class="fu">sort</span>(tabla_delitos, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los cantones con más delitos</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>tabla_delitos_ordenada <span class="ot">&lt;-</span> <span class="fu">head</span>(tabla_delitos_ordenada, <span class="dv">20</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de barras verticales</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> tabla_delitos_ordenada,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">"Cantidad de delitos cometidos en 2022 por cantón"</span>, </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="st">"Fuente: OIJ"</span>,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"red"</span>,</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">las =</span> <span class="dv">2</span>, <span class="co"># inclinación de las etiquetas (valor entre 0 y 3)</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.names =</span> <span class="fl">0.5</span>,  <span class="co"># tamaño de las etiquetas</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.axis =</span> <span class="fl">0.7</span> <span class="co"># tamaño de los números en el eje </span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear tabla de frecuencias</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tabla_delitos <span class="ot">&lt;-</span> <span class="fu">table</span>(delitos_2022<span class="sc">$</span>Canton)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ordenar descendentemente la tabla de frecuencia</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>tabla_delitos_ordenada <span class="ot">&lt;-</span> <span class="fu">sort</span>(tabla_delitos, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los cantones con más delitos</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>tabla_delitos_ordenada <span class="ot">&lt;-</span> <span class="fu">head</span>(tabla_delitos_ordenada, <span class="dv">20</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de barras verticales</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> tabla_delitos_ordenada,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">"Cantidad de delitos cometidos en 2022 por cantón"</span>, </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="st">"Fuente: OIJ"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"red"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">las =</span> <span class="dv">2</span>, <span class="co"># inclinación de las etiquetas (valor entre 0 y 3)</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.names =</span> <span class="fl">0.5</span>,  <span class="co"># tamaño de las etiquetas</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.axis =</span> <span class="fl">0.7</span> <span class="co"># tamaño de los números en el eje </span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/cantidad-delitos-cantones-barras-verticales-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -384,6 +389,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/cantidad-delitos-edad-victima-pastel-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="gráfico-cantidad-de-homicidios-por-provincia-y-edad-de-l-victima" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico-cantidad-de-homicidios-por-provincia-y-edad-de-l-victima">Gráfico cantidad de homicidios por provincia y edad de l victima</h2>
+<div class="cell">
+<details>
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear tabla de frecuencias</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>tabla_delitos <span class="ot">&lt;-</span> <span class="fu">table</span>(delitos_2022<span class="sc">$</span>Edad,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                       delitos_2022<span class="sc">$</span>Provincia)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="fu">table</span>(delitos_2022<span class="sc">$</span>Edad, delitos_2022<span class="sc">$</span>Provincia),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">"Cantidad de delitos cometidos en 2022 por provincia y edad"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">sub =</span> <span class="st">"Fuente OIJ"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">4</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">las =</span> <span class="dv">2</span>, <span class="co"># inclinación de las etiquetas (valor entre 0 y 3)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.names =</span> <span class="fl">0.5</span>,  <span class="co"># tamaño de las etiquetas</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">cex.axis =</span> <span class="fl">0.5</span> <span class="co"># tamaño de los números en el eje </span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Leyenda</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topleft"</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Adulto Mayor"</span>, <span class="st">"Desconocido"</span>, <span class="st">"Mayor de edad"</span>, <span class="st">"Menor de edad"</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill =</span> <span class="fu">rainbow</span>(<span class="dv">4</span>),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">0.5</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/cantidad-homicidios-edad-provincia-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>

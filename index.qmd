@@ -13,6 +13,7 @@ Este documento contiene un conjunto de gráficos estadísticos de delitos cometi
 # Carga y muestra de los datos
 ```{r}
 #| label: carga-muestra-datos
+#| code-fold: true
 
 delitos_2022 <- read.csv("estadisticaspoliciales2022.csv")
 
@@ -105,8 +106,6 @@ legend(
 ### Barras verticales
 ```{r}
 #| label: cantidad-delitos-cantones-barras-verticales
-
-
 #| code-fold: true
 
 # Crear tabla de frecuencias
@@ -163,4 +162,36 @@ legend(
   bty = "o" # quitar el marco de la leyenda, valor = ("n", "o")
 )
 ```
+
+## Gráfico cantidad de homicidios por provincia y edad de l victima
+```{r}
+#| label: cantidad-homicidios-edad-provincia
+#| code-fold: true
+
+# Crear tabla de frecuencias
+tabla_delitos <- table(delitos_2022$Edad,
+                       delitos_2022$Provincia)
+
+barplot(
+  height = table(delitos_2022$Edad, delitos_2022$Provincia),
+  main = "Cantidad de delitos cometidos en 2022 por provincia y edad",
+  sub = "Fuente OIJ",
+  col = rainbow(4),
+	las = 2, # inclinación de las etiquetas (valor entre 0 y 3)
+	cex.names = 0.5,  # tamaño de las etiquetas
+	cex.axis = 0.5 # tamaño de los números en el eje 
+)
+
+# Leyenda
+legend(
+  "topleft",
+  legend = c("Adulto Mayor", "Desconocido", "Mayor de edad", "Menor de edad"),
+  fill = rainbow(4),
+  cex = 0.5
+)
+```
+
+
+
+
 
