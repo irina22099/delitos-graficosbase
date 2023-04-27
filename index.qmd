@@ -71,10 +71,13 @@ barplot(
 ```{r}
 #| label: cantidad-delitos-provincia-pastel
 #| code-fold: true
+
 # Crear tabla de frecuencias
 tabla_delitos <- table(delitos_2022$Provincia)
+
 # Ordenar ascendentemente la tabla de frecuencia
 tabla_delitos_ordenada <- sort(tabla_delitos)
+
 # Gráfico de pastel
 pie(
   tabla_delitos_ordenada,
@@ -97,4 +100,67 @@ legend(
 )
 ```
 
+## Gráficos de cantidad de delitos por cantón
+
+### Barras verticales
+```{r}
+#| label: cantidad-delitos-cantones-barras-verticales
+
+
+#| code-fold: true
+
+# Crear tabla de frecuencias
+tabla_delitos <- table(delitos_2022$Canton)
+
+# Ordenar descendentemente la tabla de frecuencia
+tabla_delitos_ordenada <- sort(tabla_delitos, decreasing = TRUE)
+
+# Obtener los cantones con más delitos
+tabla_delitos_ordenada <- head(tabla_delitos_ordenada, 20)
+
+# Gráfico de barras verticales
+barplot(
+	height = tabla_delitos_ordenada,
+	main = "Cantidad de delitos cometidos en 2022 por cantón", 
+	sub = "Fuente: OIJ",
+	col = "red",
+	las = 2, # inclinación de las etiquetas (valor entre 0 y 3)
+	cex.names = 0.5,  # tamaño de las etiquetas
+	cex.axis = 0.7 # tamaño de los números en el eje 
+)
+```
+
+## Gráfico cantidad de delitos por edad de la vicitma 
+
+```{r}
+#| label: cantidad-delitos-edad-victima-pastel
+#| code-fold: true
+
+# Crear tabla de frecuencias
+tabla_delitos <- table(delitos_2022$Edad)
+
+# Ordenar ascendentemente la tabla de frecuencia
+tabla_delitos_ordenada <- sort(tabla_delitos)
+
+# Gráfico de pastel
+pie(
+  tabla_delitos_ordenada,
+  main = "Cantidad de delitos en 2022 por edad de la victima",
+  sub = "Fuente: OIJ",
+  col = rainbow(length(tabla_delitos_ordenada)),
+  cex = 0.8,
+  labels = paste0(
+  	round(100 * tabla_delitos_ordenada / sum(tabla_delitos_ordenada), 1), 
+  	"%"
+  )
+)
+# Agregar leyenda
+legend(
+  "topright",
+  legend = names(tabla_delitos_ordenada),
+  fill = rainbow(length(tabla_delitos_ordenada)),
+  cex = 0.8,
+  bty = "o" # quitar el marco de la leyenda, valor = ("n", "o")
+)
+```
 
